@@ -1,0 +1,16 @@
+spring:
+  data:
+    mongodb:
+      username: root
+      password: verySecretPassword
+      host: localhost
+      port: 27017
+      database: assistant
+
+server:
+  port: 8081
+
+telegram:
+  bot:
+    name: teacher-assistant
+    token:

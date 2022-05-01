@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  dbmongo:
+      image: mongo:latest
+      container_name: crm-teacher-mongo
+      ports:
+        - 27017:27017
