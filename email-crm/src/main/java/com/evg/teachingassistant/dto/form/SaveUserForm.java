@@ -8,7 +8,9 @@ import javax.validation.constraints.NotEmpty;
 @Data
 public class SaveUserForm {
     @NotEmpty
-    private String name;
+    private String firstName;
+    @NotEmpty
+    private String lastName;
     @NotEmpty
     private String password;
     @NotEmpty

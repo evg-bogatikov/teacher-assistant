@@ -1,7 +1,7 @@
 package com.evg.teachingassistant.service;
 
 import com.evg.teachingassistant.dto.form.SaveUserForm;
-import com.evg.teachingassistant.dto.view.ProfileView;
+import com.evg.teachingassistant.dto.view.UserView;
 import com.evg.teachingassistant.exception.EntityNotFoundException;
 import com.evg.teachingassistant.model.user.Role;
 import com.evg.teachingassistant.model.user.User;
@@ -9,10 +9,12 @@ import com.evg.teachingassistant.repository.UserRepository;
 import com.evg.teachingassistant.service.api.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -24,20 +26,41 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
+    @Override
+    public UserView getUserViewById(UUID userId) {
+        User byId = userRepository.findById(userId)
+                .orElseThrow(EntityNotFoundException::new);
+        return mapUserToUserView(byId);
+    }
 
     @Override
-    public ProfileView getProfileByUserId(UUID userId) {
-        Optional<User> byId = userRepository.findById(userId);
-        if (byId.isPresent()) {
-            User user = byId.get();
-            return new ProfileView(
-                    user.getId(),
-                    user.getName(),
-                    user.getEmail(),
-                    user.getTypeEmail()
-            );
+    public UserView saveUser(SaveUserForm saveUserForm) {
+        User savedUser = userRepository.save(new User(
+                UUID.randomUUID(),
+                saveUserForm.getFirstName(),
+                saveUserForm.getLastName(),
+                saveUserForm.getPassword(),
+                saveUserForm.getEmail(),
+                saveUserForm.getTypeEmail(),
+                saveUserForm.getAppPassword(),
+                Set.of(Role.ROLE_USER)
+        ));
+        return mapUserToUserView(savedUser);
+    }
+
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<User> getUserByEmailAndPassword(String username, String password) {
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(EntityNotFoundException::new);
+        if(BCrypt.checkpw(password, user.getPassword())){
+            return Optional.of(user);
         }
-        throw new EntityNotFoundException();
+        return Optional.empty();
     }
 
     @Override
@@ -45,18 +68,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId);
     }
 
-    @Override
-    public User saveUser(SaveUserForm saveUserForm) {
-        User entity = new User(
-                UUID.randomUUID(),
-                saveUserForm.getName(),
-                saveUserForm.getPassword(),
-                saveUserForm.getEmail(),
-                saveUserForm.getTypeEmail(),
-                saveUserForm.getAppPassword(),
-                List.of(Role.ROLE_USER)
+    private UserView mapUserToUserView(User user) {
+        return new UserView(
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getTypeEmail()
         );
-        logger.info("User id: {}", entity.getId());
-        return userRepository.save(entity);
     }
 }

@@ -8,9 +8,10 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-public class ProfileView {
+public class UserView {
     UUID id;
-    String name;
+    String firstName;
+    String lastName;
     String email;
     TypeEmail typeEmail;
 }

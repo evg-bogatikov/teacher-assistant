@@ -1,16 +1,21 @@
 package com.evg.teachingassistant.service.api;
 
 import com.evg.teachingassistant.dto.form.SaveUserForm;
-import com.evg.teachingassistant.dto.view.ProfileView;
+import com.evg.teachingassistant.dto.view.UserView;
 import com.evg.teachingassistant.model.user.User;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
-    ProfileView getProfileByUserId(UUID userId);
+
+    UserView getUserViewById(UUID userId);
+
+    UserView saveUser(SaveUserForm saveUserForm);
+
+    Optional<User> getUserByEmail(String email);
 
     Optional<User> getUserById(UUID userId);
 
-    User saveUser(SaveUserForm saveUserForm);
+    Optional<User> getUserByEmailAndPassword(String username, String password);
 }

@@ -6,22 +6,23 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
-@Document(collection="usr")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Document(collection="usr")
 public class User {
 
     @Id
     private UUID id;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String password;
     private String email;
     private TypeEmail typeEmail;
     private String appPassword;
-    private List<Role> roles;
+    private Set<Role> roles;
 }
 
