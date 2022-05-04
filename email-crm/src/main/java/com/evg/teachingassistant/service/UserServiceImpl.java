@@ -10,7 +10,6 @@ import com.evg.teachingassistant.service.api.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -57,7 +56,7 @@ public class UserServiceImpl implements UserService {
     public Optional<User> getUserByEmailAndPassword(String username, String password) {
         User user = userRepository.findByEmail(username)
                 .orElseThrow(EntityNotFoundException::new);
-        if(BCrypt.checkpw(password, user.getPassword())){
+        if (BCrypt.checkpw(password, user.getPassword())) {
             return Optional.of(user);
         }
         return Optional.empty();

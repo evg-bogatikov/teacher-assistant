@@ -11,6 +11,6 @@ server:
   port: 8081
 
 jwt:
-  accessTokenExpirationMs: 60000
-  refreshTokenExpirationMs: 120000
+  accessTokenExpirationMs: 600000
+  refreshTokenExpirationMs: 1200000
   secret: very_very_secret_key@@very_very_secret_key+very_very_secret_key@@very_very_secret_key+very_very_secret_key@@very_very_secret_keyvery_very_secret_key@@very_very_secret_key+very_very_secret_key@@very_very_secret_key+very_very_secret_key@@very_very_secret_key

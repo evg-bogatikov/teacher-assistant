@@ -6,10 +6,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
+    private UUID userId;
     private String username;
     private String password;
     private Collection<? extends GrantedAuthority> grantedAuthorities;
@@ -17,6 +19,10 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return grantedAuthorities;
+    }
+
+    public UUID getUserId() {
+        return userId;
     }
 
     @Override
@@ -51,6 +57,7 @@ public class CustomUserDetails implements UserDetails {
 
     public static CustomUserDetails fromUserEntityToCustomUserDetails(User userEntity) {
         CustomUserDetails customUserDetails = new CustomUserDetails();
+        customUserDetails.userId = userEntity.getId();
         customUserDetails.username = userEntity.getEmail();
         customUserDetails.password = userEntity.getPassword();
         customUserDetails.grantedAuthorities = userEntity.getRoles()
