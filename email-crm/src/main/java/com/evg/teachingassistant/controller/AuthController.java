@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
+
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -24,12 +27,12 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserView> registerUser(@RequestBody SaveUserForm saveUserForm) {
+    public ResponseEntity<UserView> registerUser(@Valid @RequestBody SaveUserForm saveUserForm) {
         return ResponseEntity.ok(authService.registerUser(saveUserForm));
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<JwtView> auth(@RequestBody UserAuthForm userAuthForm) {
+    public ResponseEntity<JwtView> auth(@Valid @RequestBody UserAuthForm userAuthForm) {
         return ResponseEntity.ok(authService.auth(userAuthForm));
     }
 

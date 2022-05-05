@@ -16,6 +16,8 @@ public interface MessageService {
     List<Message> saveAllMessage(List<SaveMessageForm> saveMessageFormList, UUID userId);
 
     List<Message> getMessageFromEmailBox(UUID userId);
+
+    byte[] getFile(UUID messageId, String fileId);
 //    Boolean sendEmail(Message message);
 
 }

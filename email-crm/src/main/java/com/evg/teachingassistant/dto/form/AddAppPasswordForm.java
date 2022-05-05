@@ -5,9 +5,9 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class UserAuthForm {
+public class AddAppPasswordForm {
     @NotBlank
-    private String username;
+    String userId;
     @NotBlank
-    private String password;
+    String appPassword;
 }

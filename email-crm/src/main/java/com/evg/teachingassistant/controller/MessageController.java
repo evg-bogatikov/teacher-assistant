@@ -5,6 +5,8 @@ import com.evg.teachingassistant.security.CustomUserDetails;
 import com.evg.teachingassistant.service.api.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -39,5 +41,16 @@ public class MessageController {
     public ResponseEntity<List<Message>> getAllMessageFromEmailBox() {
         UUID userId = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         return ResponseEntity.ok(messageService.getMessageFromEmailBox(userId));
+    }
+
+    @GetMapping("/{messageId}/upload/{fileId}")
+    public ResponseEntity<byte[]> getFile(@PathVariable UUID messageId, @PathVariable String fileId){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.ALL);
+        byte[] file = messageService.getFile(messageId, fileId);
+        return ResponseEntity.ok()
+                .contentLength(file.length)
+                .contentType(MediaType.ALL)
+                .body(file);
     }
 }

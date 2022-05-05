@@ -19,7 +19,6 @@ public class TaskController {
 
     private final RestTemplate restTemplate;
 
-    @Value("${telegram.bot.token}")
     private String token;
 
     public TaskController(RestTemplate restTemplate) {

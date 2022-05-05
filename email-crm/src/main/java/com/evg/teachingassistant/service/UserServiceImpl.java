@@ -1,9 +1,12 @@
 package com.evg.teachingassistant.service;
 
+import com.evg.teachingassistant.dto.form.AddAppPasswordForm;
 import com.evg.teachingassistant.dto.form.SaveUserForm;
 import com.evg.teachingassistant.dto.view.UserView;
 import com.evg.teachingassistant.exception.EntityNotFoundException;
+import com.evg.teachingassistant.exception.EntityNotMatchRoleException;
 import com.evg.teachingassistant.model.user.Role;
+import com.evg.teachingassistant.model.user.TypeEmail;
 import com.evg.teachingassistant.model.user.User;
 import com.evg.teachingassistant.repository.UserRepository;
 import com.evg.teachingassistant.service.api.UserService;
@@ -12,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -40,10 +44,23 @@ public class UserServiceImpl implements UserService {
                 saveUserForm.getLastName(),
                 saveUserForm.getPassword(),
                 saveUserForm.getEmail(),
-                saveUserForm.getTypeEmail(),
-                saveUserForm.getAppPassword(),
+                getTypeEmailFromEmail(saveUserForm.getEmail()),
+                "",
                 Set.of(Role.ROLE_USER)
         ));
+        return mapUserToUserView(savedUser);
+    }
+
+    @Override
+    public UserView addAppPassword(AddAppPasswordForm addAppPasswordForm, UUID userId) {
+        User user = userRepository.findById(UUID.fromString(addAppPasswordForm.getUserId()))
+                .orElseThrow(EntityNotFoundException::new);
+        if(!user.getId().equals(userId)){
+            throw new EntityNotMatchRoleException();
+        }
+
+        user.setAppPassword(addAppPasswordForm.getAppPassword());
+        User savedUser = userRepository.save(user);
         return mapUserToUserView(savedUser);
     }
 
@@ -65,6 +82,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getUserById(UUID userId) {
         return userRepository.findById(userId);
+    }
+
+    private TypeEmail getTypeEmailFromEmail(String email){
+        String s = email.split("@")[1];
+        String s1 = s.split("\\.")[0];
+        logger.info("Type email str: {}, {}", s1, s);
+        return TypeEmail.valueOf(s1.toUpperCase(Locale.ROOT));
     }
 
     private UserView mapUserToUserView(User user) {

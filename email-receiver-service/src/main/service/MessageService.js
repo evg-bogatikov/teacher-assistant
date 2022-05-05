@@ -2,12 +2,17 @@ import _ from "lodash";
 import {simpleParser} from "mailparser";
 import fs from "fs-extra";
 import uuid from "uuid-random";
+import path from "path";
+import {fileURLToPath} from 'url'
 
-const RESOURCES = '/home/evgeny/IdeaProjects/teacher-assistant/email-receiver-service/src/resources'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+let RESOURCES = path.resolve(__dirname, '../../resources')
 
 const MessageService = {
 
     parseAllMessage(messages) {
+        console.log(RESOURCES)
         const result = []
         messages.forEach(message => {
             let all = _.find(message.parts, {"which": ""})
@@ -37,7 +42,7 @@ const MessageService = {
             messages.forEach(message => {
                 jsonData.words.every(targetWord => {
                     if (message.subject.toLowerCase().includes(targetWord)) {
-                        if(message.body === undefined)
+                        if (message.body === undefined)
                             message.body = ""
                         filteredMessages.push(message)
                         return false
@@ -50,13 +55,16 @@ const MessageService = {
     },
 
     downloadFilesFromMessage(message) {
-        if(message.attachments.length === 0)
+        if (message.attachments.length === 0)
             return message
 
         let fileNameArray = []
         message.attachments.forEach(item => {
-            let fileName = uuid() + '.' + item.filename
-            fs.outputFile(RESOURCES + '/static/' + fileName, item.content)
+            let fileName = {
+                "fileId": uuid(),
+                "filename": item.filename
+            }
+            fs.outputFile(RESOURCES + '/static/' + fileName.fileId + '.' + fileName.filename, item.content)
                 .then(err => {
                     if (err) {
                         return console.log(err);

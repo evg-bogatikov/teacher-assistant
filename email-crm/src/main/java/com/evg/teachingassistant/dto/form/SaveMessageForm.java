@@ -13,5 +13,5 @@ public class SaveMessageForm {
     private String to;
     private Date date;
     private String body;
-    private List<String> attachments;
+    private List<FileForm> attachments;
 }

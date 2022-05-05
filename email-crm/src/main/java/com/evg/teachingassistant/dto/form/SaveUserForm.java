@@ -1,22 +1,18 @@
 package com.evg.teachingassistant.dto.form;
 
-import com.evg.teachingassistant.model.user.TypeEmail;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
+
 
 @Data
 public class SaveUserForm {
-    @NotEmpty
+    @NotBlank(message = "First name may not be blank")
     private String firstName;
-    @NotEmpty
+    @NotBlank(message = "Last name may not be blank")
     private String lastName;
-    @NotEmpty
+    @NotBlank(message = "Password may not be blank")
     private String password;
-    @NotEmpty
+    @NotBlank(message = "Email may not be blank")
     private String email;
-    @NotEmpty
-    private TypeEmail typeEmail;
-    @NotEmpty
-    private String appPassword;
 }

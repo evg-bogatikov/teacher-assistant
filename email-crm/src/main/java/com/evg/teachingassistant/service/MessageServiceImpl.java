@@ -1,5 +1,6 @@
 package com.evg.teachingassistant.service;
 
+import com.evg.teachingassistant.dto.form.FileForm;
 import com.evg.teachingassistant.dto.form.SaveAllMessageForm;
 import com.evg.teachingassistant.dto.form.SaveMessageForm;
 import com.evg.teachingassistant.exception.EntityNotFoundException;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -56,7 +59,7 @@ public class MessageServiceImpl implements MessageService {
                 saveMessageForm.getTo(),
                 saveMessageForm.getDate(),
                 saveMessageForm.getBody(),
-                saveMessageForm.getAttachments(),
+                mapFileFormToMap(saveMessageForm.getAttachments()),
                 TypeMessage.MAIL,
                 userId
         ));
@@ -73,7 +76,7 @@ public class MessageServiceImpl implements MessageService {
                             saveMessageForm.getTo(),
                             saveMessageForm.getDate(),
                             saveMessageForm.getBody(),
-                            saveMessageForm.getAttachments(),
+                            mapFileFormToMap(saveMessageForm.getAttachments()),
                             TypeMessage.MAIL,
                             userId
                     );
@@ -95,7 +98,24 @@ public class MessageServiceImpl implements MessageService {
         HttpEntity<String> request = new HttpEntity<>(jsonObject.toString(), httpHeaders);
 
         ResponseEntity<SaveAllMessageForm> forEntity = restTemplate.postForEntity(urlReceiverService + "/api/v1/email/", request, SaveAllMessageForm.class);
-        List<SaveMessageForm> messageList = forEntity.getBody().getMessageList();
+        List<SaveMessageForm> messageList = Objects.requireNonNull(forEntity.getBody()).getMessageList();
         return saveAllMessage(messageList, userId);
+    }
+
+    @Override
+    public byte[] getFile(UUID messageId, String fileId) {
+        Message message = messageRepository.findById(messageId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        if (message.getFile().containsKey(fileId)) {
+            String fileName = message.getFile().get(fileId);
+        }
+
+        throw new EntityNotFoundException();
+    }
+
+    private Map<String, String> mapFileFormToMap(List<FileForm> fileForm) {
+        return fileForm.stream()
+                .collect(Collectors.toMap(FileForm::getFileId, FileForm::getFilename));
     }
 }
