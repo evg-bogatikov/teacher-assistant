@@ -31,7 +31,6 @@ public class UserController {
     @PostMapping("/add/appPassword")
     public ResponseEntity<UserView> addAppPassword(@Valid @RequestBody AddAppPasswordForm addAppPasswordForm) {
         UUID userId = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
-        logger.info("{} userid: {}", addAppPasswordForm.getUserId(), userId);
         return ResponseEntity.ok(userService.addAppPassword(addAppPasswordForm, userId));
     }
 }

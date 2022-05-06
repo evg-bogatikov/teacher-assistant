@@ -42,15 +42,4 @@ public class MessageController {
         UUID userId = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         return ResponseEntity.ok(messageService.getMessageFromEmailBox(userId));
     }
-
-    @GetMapping("/{messageId}/upload/{fileId}")
-    public ResponseEntity<byte[]> getFile(@PathVariable UUID messageId, @PathVariable String fileId){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.ALL);
-        byte[] file = messageService.getFile(messageId, fileId);
-        return ResponseEntity.ok()
-                .contentLength(file.length)
-                .contentType(MediaType.ALL)
-                .body(file);
-    }
 }

@@ -1,6 +1,7 @@
 import _ from "lodash";
 import {simpleParser} from "mailparser";
-import fs from "fs-extra";
+import fsExtra from "fs-extra";
+import fs from 'fs'
 import uuid from "uuid-random";
 import path from "path";
 import {fileURLToPath} from 'url'
@@ -12,7 +13,6 @@ let RESOURCES = path.resolve(__dirname, '../../resources')
 const MessageService = {
 
     parseAllMessage(messages) {
-        console.log(RESOURCES)
         const result = []
         messages.forEach(message => {
             let all = _.find(message.parts, {"which": ""})
@@ -36,7 +36,7 @@ const MessageService = {
     },
 
     filterMessages(messages) {
-        let readJson = fs.readJson(RESOURCES + "/targetWord.json")
+        let readJson = fsExtra.readJson(RESOURCES + "/targetWord.json")
         return readJson.then(jsonData => {
             const filteredMessages = []
             messages.forEach(message => {
@@ -60,21 +60,34 @@ const MessageService = {
 
         let fileNameArray = []
         message.attachments.forEach(item => {
-            let fileName = {
+            let file = {
                 "fileId": uuid(),
                 "filename": item.filename
             }
-            fs.outputFile(RESOURCES + '/static/' + fileName.fileId + '.' + fileName.filename, item.content)
+            fsExtra.outputFile(RESOURCES + '/static/' + file.fileId + '.' + file.filename, item.content)
                 .then(err => {
                     if (err) {
                         return console.log(err);
                     }
                 })
-            fileNameArray.push(fileName)
+            fileNameArray.push(file)
         })
         message.attachments = fileNameArray
         return message
+    },
 
+    getFileById(fileId, res, next) {
+        fs.readdir(RESOURCES + '/static/', (err, files) => {
+            let file = files.filter(file => {
+                let fId = file.split('.')[0];
+                if(fileId === fId)
+                    return file
+            })[0]
+            if(_.isEmpty(file)){
+                next(new Error())
+            }
+            res.sendFile(RESOURCES + "/static/" + file)
+        })
     }
 }
 

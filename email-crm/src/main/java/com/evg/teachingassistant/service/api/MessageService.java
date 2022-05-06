@@ -17,7 +17,6 @@ public interface MessageService {
 
     List<Message> getMessageFromEmailBox(UUID userId);
 
-    byte[] getFile(UUID messageId, String fileId);
 //    Boolean sendEmail(Message message);
 
 }
