@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  assistant-mongodb:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=verySecretPassword
+      - MONGO_INITDB_DATABASE=assistant
+    ports:
+      - "27017:27017"
+  assistant-core-ms:
+    container_name: assistant-core
+    build:
+      context: ../../email-crm
+      dockerfile: .dockerfile
+    ports:
+      - "8081:8081"
+    links:
+      - assistant-mongodb
+  assistant-receiver-ms:
+    container_name: assistant-receiver
+    build:
+      context: ../../email-receiver-service
+      dockerfile: .dockerfile
+    ports:
+      - "8082:8082"
