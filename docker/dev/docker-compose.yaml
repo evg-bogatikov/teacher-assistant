@@ -18,6 +18,7 @@ services:
       - "8081:8081"
     links:
       - assistant-mongodb
+      - assistant-receiver-ms
   assistant-receiver-ms:
     container_name: assistant-receiver
     build:

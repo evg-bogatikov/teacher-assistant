@@ -3,12 +3,14 @@ spring:
     mongodb:
       username: root
       password: verySecretPassword
-      host: assistant-mongodb
+      host: 46.17.248.29
       port: 27017
       database: assistant
 
 server:
   port: 8081
+url-ms:
+  email-receiver: "http://46.17.248.29:8082"
 
 jwt:
   accessTokenExpirationMs: 600000

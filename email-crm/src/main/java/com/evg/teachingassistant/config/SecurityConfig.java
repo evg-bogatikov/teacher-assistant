@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -31,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/auth/**").permitAll()
+                .antMatchers("/v3/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/api/v1/admin/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()

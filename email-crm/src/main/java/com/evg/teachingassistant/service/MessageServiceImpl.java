@@ -11,6 +11,7 @@ import com.evg.teachingassistant.repository.MessageRepository;
 import com.evg.teachingassistant.service.api.MessageService;
 import com.evg.teachingassistant.service.api.UserService;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -30,7 +31,8 @@ public class MessageServiceImpl implements MessageService {
     private final MessageRepository messageRepository;
     private final RestTemplate restTemplate;
     private final UserService userService;
-    private final String urlReceiverService = "http://localhost:8082";
+    @Value("${url-ms.email-receiver}")
+    private String urlReceiverService;
 
     public MessageServiceImpl(MessageRepository messageRepository, RestTemplate restTemplate, UserService userService) {
         this.messageRepository = messageRepository;

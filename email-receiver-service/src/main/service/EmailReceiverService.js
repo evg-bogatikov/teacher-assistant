@@ -21,7 +21,7 @@ const EmailReceiverService = {
                 let searchCriteria = ['UNSEEN']
                 let fetchOptions = {
                     bodies: ['HEADER', 'TEXT', ''],
-                    // markSeen: true
+                    markSeen: true
                 }
 
                 return connection.search(searchCriteria, fetchOptions).then(messages => {
