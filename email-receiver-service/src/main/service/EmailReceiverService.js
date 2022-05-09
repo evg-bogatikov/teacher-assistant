@@ -1,5 +1,6 @@
 import imapClient from 'imap-simple'
 import MessageService from "./MessageService.js";
+import nodemailer from "nodemailer";
 
 const INBOX = 'INBOX'
 
@@ -39,6 +40,27 @@ const EmailReceiverService = {
                 })
             })
         })
+    },
+
+    sendEmail(sendMessageForm) {
+        console.log(sendMessageForm.host, sendMessageForm.user, sendMessageForm.pass)
+        let transport = nodemailer.createTransport({
+            host: sendMessageForm.host,
+            port: 465,
+            auth: {
+                user: sendMessageForm.user,
+                pass: sendMessageForm.pass,
+            }
+        });
+
+        let message ={
+            from: sendMessageForm.user,
+            to: sendMessageForm.to,
+            subject: sendMessageForm.subject,
+            text: sendMessageForm.content
+        }
+
+        return transport.sendMail(message)
     }
 }
 

@@ -1,6 +1,6 @@
 package com.evg.teachingassistant.dto.view;
 
-import com.evg.teachingassistant.model.user.TypeEmail;
+import com.evg.teachingassistant.model.user.TypeImapEmail;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,5 +13,4 @@ public class UserView {
     String firstName;
     String lastName;
     String email;
-    TypeEmail typeEmail;
 }

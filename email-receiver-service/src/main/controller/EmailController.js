@@ -15,6 +15,14 @@ router.post("/api/v1/email/", (req, res, next) => {
         }).catch(next)
 })
 
+router.post("/api/v1/email/send", (req, res, next) =>{
+    console.log(req.body)
+    EmailReceiver.sendEmail(req.body).then(info => {
+        console.log(info)
+        res.sendStatus(200)
+    }).catch(next)
+})
+
 router.get("/api/v1/email/file/:fileId", (req, res, next) => {
     MessageService.getFileById(req.params.fileId, res, next)
 })

@@ -5,8 +5,10 @@ import com.evg.teachingassistant.dto.form.SaveUserForm;
 import com.evg.teachingassistant.dto.view.UserView;
 import com.evg.teachingassistant.exception.EntityNotFoundException;
 import com.evg.teachingassistant.exception.EntityNotMatchRoleException;
+import com.evg.teachingassistant.exception.EntityNotSaveException;
 import com.evg.teachingassistant.model.user.Role;
-import com.evg.teachingassistant.model.user.TypeEmail;
+import com.evg.teachingassistant.model.user.TypeImapEmail;
+import com.evg.teachingassistant.model.user.TypeSmtpEmail;
 import com.evg.teachingassistant.model.user.User;
 import com.evg.teachingassistant.repository.UserRepository;
 import com.evg.teachingassistant.service.api.UserService;
@@ -38,13 +40,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserView saveUser(SaveUserForm saveUserForm) {
+        if (userRepository.existsByEmail(saveUserForm.getEmail())) {
+            throw new EntityNotSaveException();
+        }
         User savedUser = userRepository.save(new User(
                 UUID.randomUUID(),
                 saveUserForm.getFirstName(),
                 saveUserForm.getLastName(),
                 saveUserForm.getPassword(),
                 saveUserForm.getEmail(),
-                getTypeEmailFromEmail(saveUserForm.getEmail()),
+                getTypeImapEmailFromEmail(saveUserForm.getEmail()),
+                getTypeSmtpEmailFromEmail(saveUserForm.getEmail()),
                 "",
                 Set.of(Role.ROLE_USER)
         ));
@@ -55,7 +61,7 @@ public class UserServiceImpl implements UserService {
     public UserView addAppPassword(AddAppPasswordForm addAppPasswordForm, UUID userId) {
         User user = userRepository.findById(UUID.fromString(addAppPasswordForm.getUserId()))
                 .orElseThrow(EntityNotFoundException::new);
-        if(!user.getId().equals(userId)){
+        if (!user.getId().equals(userId)) {
             throw new EntityNotMatchRoleException();
         }
 
@@ -84,11 +90,16 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId);
     }
 
-    private TypeEmail getTypeEmailFromEmail(String email){
+    private TypeImapEmail getTypeImapEmailFromEmail(String email) {
         String s = email.split("@")[1];
         String s1 = s.split("\\.")[0];
-        logger.info("Type email str: {}, {}", s1, s);
-        return TypeEmail.valueOf(s1.toUpperCase(Locale.ROOT));
+        return TypeImapEmail.valueOf(s1.toUpperCase(Locale.ROOT));
+    }
+
+    private TypeSmtpEmail getTypeSmtpEmailFromEmail(String email) {
+        String s = email.split("@")[1];
+        String s1 = s.split("\\.")[0];
+        return TypeSmtpEmail.valueOf(s1.toUpperCase(Locale.ROOT));
     }
 
     private UserView mapUserToUserView(User user) {
@@ -96,8 +107,8 @@ public class UserServiceImpl implements UserService {
                 user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getEmail(),
-                user.getTypeEmail()
+                user.getEmail()
         );
     }
+
 }

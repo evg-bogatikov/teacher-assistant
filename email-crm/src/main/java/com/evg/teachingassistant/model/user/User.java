@@ -21,7 +21,8 @@ public class User {
     private String lastName;
     private String password;
     private String email;
-    private TypeEmail typeEmail;
+    private TypeImapEmail typeImapEmail;
+    private TypeSmtpEmail typeSmtpEmail;
     private String appPassword;
     private Set<Role> roles;
 }

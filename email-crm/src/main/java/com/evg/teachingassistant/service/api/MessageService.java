@@ -1,6 +1,7 @@
 package com.evg.teachingassistant.service.api;
 
 import com.evg.teachingassistant.dto.form.SaveMessageForm;
+import com.evg.teachingassistant.dto.form.SendMessageForm;
 import com.evg.teachingassistant.model.Message;
 
 import java.util.List;
@@ -17,6 +18,6 @@ public interface MessageService {
 
     List<Message> getMessageFromEmailBox(UUID userId);
 
-//    Boolean sendEmail(Message message);
+    Void sendEmail(SendMessageForm messageForm, UUID userId);
 
 }

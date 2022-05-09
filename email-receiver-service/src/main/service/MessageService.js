@@ -80,10 +80,10 @@ const MessageService = {
         fs.readdir(RESOURCES + '/static/', (err, files) => {
             let file = files.filter(file => {
                 let fId = file.split('.')[0];
-                if(fileId === fId)
+                if (fileId === fId)
                     return file
             })[0]
-            if(_.isEmpty(file)){
+            if (_.isEmpty(file)) {
                 next(new Error())
             }
             res.sendFile(RESOURCES + "/static/" + file)
