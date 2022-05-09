@@ -16,7 +16,6 @@ router.post("/api/v1/email/", (req, res, next) => {
 })
 
 router.post("/api/v1/email/send", (req, res, next) =>{
-    console.log(req.body)
     EmailReceiver.sendEmail(req.body).then(info => {
         console.log(info)
         res.sendStatus(200)

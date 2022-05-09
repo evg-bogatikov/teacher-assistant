@@ -43,7 +43,6 @@ const EmailReceiverService = {
     },
 
     sendEmail(sendMessageForm) {
-        console.log(sendMessageForm.host, sendMessageForm.user, sendMessageForm.pass)
         let transport = nodemailer.createTransport({
             host: sendMessageForm.host,
             port: 465,
