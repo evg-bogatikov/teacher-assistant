@@ -7,8 +7,8 @@ import com.evg.teachingassistant.exception.EntityNotFoundException;
 import com.evg.teachingassistant.exception.EntityNotMatchRoleException;
 import com.evg.teachingassistant.exception.EntityNotSaveException;
 import com.evg.teachingassistant.model.user.Role;
-import com.evg.teachingassistant.model.user.TypeImapEmail;
-import com.evg.teachingassistant.model.user.TypeSmtpEmail;
+import com.evg.teachingassistant.model.user.ImapEmailType;
+import com.evg.teachingassistant.model.user.SmtpEmailType;
 import com.evg.teachingassistant.model.user.User;
 import com.evg.teachingassistant.repository.UserRepository;
 import com.evg.teachingassistant.service.api.UserService;
@@ -17,10 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -86,20 +84,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserView> getAllUser() {
+        return userRepository.findAll().stream()
+                .map(this::mapUserToUserView)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Optional<User> getUserById(UUID userId) {
         return userRepository.findById(userId);
     }
 
-    private TypeImapEmail getTypeImapEmailFromEmail(String email) {
+    private ImapEmailType getTypeImapEmailFromEmail(String email) {
         String s = email.split("@")[1];
         String s1 = s.split("\\.")[0];
-        return TypeImapEmail.valueOf(s1.toUpperCase(Locale.ROOT));
+        return ImapEmailType.valueOf(s1.toUpperCase(Locale.ROOT));
     }
 
-    private TypeSmtpEmail getTypeSmtpEmailFromEmail(String email) {
+    private SmtpEmailType getTypeSmtpEmailFromEmail(String email) {
         String s = email.split("@")[1];
         String s1 = s.split("\\.")[0];
-        return TypeSmtpEmail.valueOf(s1.toUpperCase(Locale.ROOT));
+        return SmtpEmailType.valueOf(s1.toUpperCase(Locale.ROOT));
     }
 
     private UserView mapUserToUserView(User user) {

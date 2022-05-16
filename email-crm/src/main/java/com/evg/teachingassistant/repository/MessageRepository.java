@@ -11,4 +11,5 @@ import java.util.UUID;
 @Repository
 public interface MessageRepository extends MongoRepository<Message, UUID> {
     Optional<List<Message>> findAllByUserId(UUID userId);
+    Optional<List<Message>> findAllByIdIn(List<UUID> messageId);
 }

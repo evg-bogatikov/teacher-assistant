@@ -5,6 +5,7 @@ import com.evg.teachingassistant.dto.form.SaveUserForm;
 import com.evg.teachingassistant.dto.view.UserView;
 import com.evg.teachingassistant.model.user.User;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,4 +21,6 @@ public interface UserService {
     Optional<User> getUserById(UUID userId);
 
     Optional<User> getUserByEmailAndPassword(String username, String password);
+
+    List<UserView> getAllUser();
 }

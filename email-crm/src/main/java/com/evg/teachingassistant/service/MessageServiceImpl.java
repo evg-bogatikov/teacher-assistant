@@ -7,14 +7,12 @@ import com.evg.teachingassistant.dto.form.SendMessageForm;
 import com.evg.teachingassistant.exception.EntityNotContainAppPasswordException;
 import com.evg.teachingassistant.exception.EntityNotFoundException;
 import com.evg.teachingassistant.model.Message;
-import com.evg.teachingassistant.model.TypeMessage;
+import com.evg.teachingassistant.model.MessageType;
 import com.evg.teachingassistant.model.user.User;
 import com.evg.teachingassistant.repository.MessageRepository;
 import com.evg.teachingassistant.service.api.MessageService;
 import com.evg.teachingassistant.service.api.UserService;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,11 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.regex.Pattern;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,8 +46,8 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Message getMessageById(UUID letterId) {
-        return messageRepository.findById(letterId)
+    public Message getMessageById(UUID messageId) {
+        return messageRepository.findById(messageId)
                 .orElseThrow(EntityNotFoundException::new);
     }
 
@@ -67,7 +61,7 @@ public class MessageServiceImpl implements MessageService {
                 saveMessageForm.getDate(),
                 saveMessageForm.getBody(),
                 mapFileFormToMap(saveMessageForm.getAttachments()),
-                TypeMessage.MAIL,
+                saveMessageForm.getMessageType(),
                 userId
         ));
     }
@@ -75,19 +69,17 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<Message> saveAllMessage(List<SaveMessageForm> saveMessageFormList, UUID userId) {
         List<Message> messageList = saveMessageFormList.stream()
-                .map(saveMessageForm -> {
-                    return new Message(
-                            UUID.randomUUID(),
-                            saveMessageForm.getSubject(),
-                            saveMessageForm.getFrom(),
-                            saveMessageForm.getTo(),
-                            saveMessageForm.getDate(),
-                            saveMessageForm.getBody(),
-                            mapFileFormToMap(saveMessageForm.getAttachments()),
-                            TypeMessage.MAIL,
-                            userId
-                    );
-                }).collect(Collectors.toList());
+                .map(saveMessageForm -> new Message(
+                        UUID.randomUUID(),
+                        saveMessageForm.getSubject(),
+                        saveMessageForm.getFrom(),
+                        saveMessageForm.getTo(),
+                        saveMessageForm.getDate(),
+                        saveMessageForm.getBody(),
+                        mapFileFormToMap(saveMessageForm.getAttachments()),
+                        MessageType.MAIL,
+                        userId
+                )).collect(Collectors.toList());
 
         return messageRepository.saveAll(messageList);
     }
@@ -102,7 +94,7 @@ public class MessageServiceImpl implements MessageService {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("email", user.getEmail());
         jsonObject.put("password", user.getAppPassword());
-        jsonObject.put("host", user.getTypeImapEmail().getHost());
+        jsonObject.put("host", user.getImapEmailType().getHost());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(jsonObject.toString(), httpHeaders);
@@ -121,7 +113,7 @@ public class MessageServiceImpl implements MessageService {
             throw new EntityNotContainAppPasswordException();
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("host", user.getTypeSmtpEmail().getHost());
+        jsonObject.put("host", user.getSmtpEmailType().getHost());
         jsonObject.put("user", user.getEmail());
         jsonObject.put("pass", user.getAppPassword());
         jsonObject.put("to", messageForm.getTo());
@@ -133,6 +125,11 @@ public class MessageServiceImpl implements MessageService {
 
         restTemplate.postForEntity(urlReceiverService + "/api/v1/email/send", request, Void.class);
         return null;
+    }
+
+    @Override
+    public Optional<List<Message>> getAllMessageByListId(List<UUID> messageId) {
+       return messageRepository.findAllByIdIn(messageId);
     }
 
 

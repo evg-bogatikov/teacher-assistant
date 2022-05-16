@@ -1,6 +1,7 @@
 package com.evg.teachingassistant.tg;
 
-import com.evg.teachingassistant.tg.handler.TaskHandler;
+import com.evg.teachingassistant.tg.handler.MainHandler;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -8,9 +9,10 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-//@Component
+@Component
 public class BotCore extends TelegramLongPollingBot {
-    private final TaskHandler taskHandler;
+
+    private final MainHandler mainHandler;
 
     @Value("${telegram.bot.token}")
     private String TOKEN;
@@ -18,8 +20,8 @@ public class BotCore extends TelegramLongPollingBot {
     @Value("${telegram.bot.name}")
     private String NAME;
 
-    public BotCore(TaskHandler taskHandler) {
-        this.taskHandler = taskHandler;
+    public BotCore(MainHandler mainHandler) {
+        this.mainHandler = mainHandler;
     }
 
     @Override
@@ -34,20 +36,10 @@ public class BotCore extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-
-        if(update.hasMessage() && update.getMessage().hasPhoto()){
-           SendMessage sendMessage = new SendMessage();
-           sendMessage.setChatId(update.getMessage().getChatId().toString());
-
-        }
-        if (update.hasMessage() && update.getMessage().hasDocument()) {
-            SendMessage message = taskHandler.handleTask(update);
-
-            try {
-                execute(message);
-            } catch (TelegramApiException telegramApiException) {
-                telegramApiException.printStackTrace();
-            }
+        try {
+            execute(mainHandler.handler(update));
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
         }
     }
 }
