@@ -1,13 +1,13 @@
 package com.evg.teachingassistant.model.user;
 
-public enum TypeImapEmail {
-    GOOGLE("imap.google.ru"),
-    MAIL("imap.mail.ru"),
-    YANDEX("imap.yandex.ru");
+public enum SmtpEmailType {
+    GOOGLE("smtp.google.ru"),
+    MAIL("smtp.mail.ru"),
+    YANDEX("smtp.yandex.ru");
 
     private final String host;
 
-    TypeImapEmail(String host){
+    SmtpEmailType(String host){
         this.host = host;
     }
 

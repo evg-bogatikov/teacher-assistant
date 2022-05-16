@@ -7,7 +7,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -24,6 +23,6 @@ public class Message {
     private Date date;
     private String content;
     private Map<String, String> file;//fileId & fileName
-    private TypeMessage typeMessage;
+    private MessageType messageType;
     private UUID userId;
 }

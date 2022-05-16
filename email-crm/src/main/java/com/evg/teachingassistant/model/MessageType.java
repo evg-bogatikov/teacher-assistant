@@ -1,6 +1,6 @@
 package com.evg.teachingassistant.model;
 
-public enum TypeMessage {
+public enum MessageType {
     MAIL,
     MESSANGER
 }
