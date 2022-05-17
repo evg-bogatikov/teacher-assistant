@@ -13,6 +13,7 @@ public class SaveMessageForm {
     private String to;
     private Date date;
     private String body;
+    private List<String> categories;
     private MessageType messageType = MessageType.MAIL;
     private List<FileForm> attachments;
 }

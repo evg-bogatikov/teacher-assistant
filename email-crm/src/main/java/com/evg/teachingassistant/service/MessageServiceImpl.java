@@ -60,6 +60,7 @@ public class MessageServiceImpl implements MessageService {
                 saveMessageForm.getTo(),
                 saveMessageForm.getDate(),
                 saveMessageForm.getBody(),
+                saveMessageForm.getCategories(),
                 mapFileFormToMap(saveMessageForm.getAttachments()),
                 saveMessageForm.getMessageType(),
                 userId
@@ -76,6 +77,7 @@ public class MessageServiceImpl implements MessageService {
                         saveMessageForm.getTo(),
                         saveMessageForm.getDate(),
                         saveMessageForm.getBody(),
+                        saveMessageForm.getCategories(),
                         mapFileFormToMap(saveMessageForm.getAttachments()),
                         MessageType.MAIL,
                         userId

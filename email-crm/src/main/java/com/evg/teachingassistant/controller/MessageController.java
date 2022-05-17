@@ -37,7 +37,7 @@ public class MessageController {
         return ResponseEntity.ok(messageService.getMessageById(emailId));
     }
 
-    @PostMapping("/update/from-email")
+    @GetMapping("/update/from-email")
     public ResponseEntity<List<Message>> getAllMessageFromEmailBox() {
         UUID userId = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
         return ResponseEntity.ok(messageService.getMessageFromEmailBox(userId));

@@ -84,6 +84,7 @@ public class MessageHandler {
         saveMessageForm.setTo(telegramMessageParsUtil.getTo(telegramMessage));
         saveMessageForm.setDate(new Date(telegramMessage.getDate()));
         saveMessageForm.setBody(telegramMessageParsUtil.getContent(telegramMessage));
+        saveMessageForm.setCategories(List.of());
         saveMessageForm.setMessageType(MessageType.MESSANGER);
 
         return saveMessageForm;

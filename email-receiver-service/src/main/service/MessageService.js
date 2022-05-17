@@ -28,6 +28,7 @@ const MessageService = {
                         to: message.to.text,
                         date: message.date,
                         body: message.text,
+                        categories: [],
                         attachments: message.attachments
                     }
                 }))
@@ -39,18 +40,19 @@ const MessageService = {
         let readJson = fsExtra.readJson(RESOURCES + "/targetWord.json")
         return readJson.then(jsonData => {
             const filteredMessages = []
-            messages.forEach(message => {
-                jsonData.words.every(targetWord => {
-                    if (message.subject.toLowerCase().includes(targetWord)) {
-                        if (message.body === undefined)
-                            message.body = ""
-                        filteredMessages.push(message)
-                        return false
+            Object.entries(jsonData.words).forEach(([key, targetsWords]) => {
+                targetsWords.forEach(targetWord => {
+                        messages.forEach(message => {
+                            if (message.subject.toLowerCase().includes(targetWord)) {
+                                message.categories.push(key)
+                                if (!filteredMessages.includes(message))
+                                    filteredMessages.push(message)
+                            }
+                        })
                     }
-                    return true
-                })
+                )
             })
-            return filteredMessages
+            return filteredMessages;
         })
     },
 
