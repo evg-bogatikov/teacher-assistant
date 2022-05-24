@@ -17,7 +17,7 @@ public class TeachersHandler {
         this.userService = userService;
     }
 
-    public SendMessage handler(Message message) {
+    public SendMessage getAllTeachers(Message message) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(message.getChatId().toString());
         sendMessage.setText(getAllTeachers());

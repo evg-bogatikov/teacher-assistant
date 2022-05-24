@@ -19,5 +19,5 @@ jwt:
 
 telegram:
   bot:
-    token: 5358052286:AAGharGgUDKFexjiUAPFKl4n-2Z0HwWkKc0
-    name: Teacher-assistant-bot
+    token: 5304570774:AAGxRHFWKrTQ7KrMHqMMbNIr3Q_UdFaDWY8
+    name: Test-bot

@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.util.List;
-
 @Component
 public class StartHandler {
     private final TelegramUserService telegramUserService;
@@ -16,7 +14,7 @@ public class StartHandler {
         this.telegramUserService = telegramUserService;
     }
 
-    public SendMessage handler(Message message){
+    public SendMessage startBot(Message message) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(message.getChatId().toString());
 

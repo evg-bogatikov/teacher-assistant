@@ -7,6 +7,8 @@ import java.util.UUID;
 
 public interface RefreshTokenService {
     RefreshToken verifyExpiration(RefreshToken refreshTokenForm);
+
     RefreshToken createRefreshToken(UUID userId);
+
     Optional<RefreshToken> getRefreshTokenByToken(String token);
 }

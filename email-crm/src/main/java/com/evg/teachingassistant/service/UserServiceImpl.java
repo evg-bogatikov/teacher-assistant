@@ -6,14 +6,12 @@ import com.evg.teachingassistant.dto.view.UserView;
 import com.evg.teachingassistant.exception.EntityNotFoundException;
 import com.evg.teachingassistant.exception.EntityNotMatchRoleException;
 import com.evg.teachingassistant.exception.EntityNotSaveException;
-import com.evg.teachingassistant.model.user.Role;
 import com.evg.teachingassistant.model.user.ImapEmailType;
+import com.evg.teachingassistant.model.user.Role;
 import com.evg.teachingassistant.model.user.SmtpEmailType;
 import com.evg.teachingassistant.model.user.User;
 import com.evg.teachingassistant.repository.UserRepository;
 import com.evg.teachingassistant.service.api.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +20,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
-    Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -115,5 +113,4 @@ public class UserServiceImpl implements UserService {
                 user.getEmail()
         );
     }
-
 }

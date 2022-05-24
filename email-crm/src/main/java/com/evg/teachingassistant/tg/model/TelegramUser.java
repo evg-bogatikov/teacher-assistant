@@ -1,6 +1,5 @@
 package com.evg.teachingassistant.tg.model;
 
-import com.evg.teachingassistant.model.Message;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

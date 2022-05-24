@@ -9,6 +9,8 @@ import com.evg.teachingassistant.dto.view.UserView;
 
 public interface AuthService {
     JwtView auth(UserAuthForm userAuthForm);
+
     UserView registerUser(SaveUserForm saveUserForm);
+
     RefreshTokenView refreshToken(RefreshTokenForm refreshTokenForm);
 }

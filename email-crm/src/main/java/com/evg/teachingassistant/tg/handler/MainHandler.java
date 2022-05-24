@@ -28,19 +28,19 @@ public class MainHandler {
         if (update.hasMessage()) {
             switch (commandParsUtil.getCommand(update.getMessage().getText())) {
                 case START:
-                    return startHandler.handler(update.getMessage());
+                    return startHandler.startBot(update.getMessage());
                 case HELP:
-                    return helpHandler.handler(update.getMessage());
+                    return helpHandler.getInfo(update.getMessage());
                 case SETTINGS:
                     return settingsHandler.getSettings(update.getMessage());
                 case SETTINGS_UPDATE:
                     return settingsHandler.updateSettings(update.getMessage());
                 case TEACHERS:
-                    return teachersHandler.handler(update.getMessage());
+                    return teachersHandler.getAllTeachers(update.getMessage());
                 case MESSAGE:
-                    return messageHandler.getAllMessage(update.getMessage());
+                    return messageHandler.getAllMessageByChatId(update.getMessage());
                 case MESSAGE_SEND:
-                    return messageHandler.sendMessageToTeacher(update.getMessage());
+                    return messageHandler.sendMessageToTeachers(update.getMessage());
             }
         }
         SendMessage sendMessage = new SendMessage();

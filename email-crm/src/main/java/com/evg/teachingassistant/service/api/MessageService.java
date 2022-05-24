@@ -19,7 +19,9 @@ public interface MessageService {
 
     List<Message> getMessageFromEmailBox(UUID userId);
 
-    Void sendEmail(SendMessageForm messageForm, UUID userId);
+    Void sendEmailMessage(SendMessageForm messageForm, UUID userId);
+
+//    Void sendTelegramMessage(SendMessageForm messageForm, UUID userId);
 
     Optional<List<Message>> getAllMessageByListId(List<UUID> messageId);
 

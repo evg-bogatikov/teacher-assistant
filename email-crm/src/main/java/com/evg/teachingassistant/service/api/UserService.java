@@ -14,6 +14,7 @@ public interface UserService {
     UserView getUserViewById(UUID userId);
 
     UserView saveUser(SaveUserForm saveUserForm);
+
     UserView addAppPassword(AddAppPasswordForm addAppPasswordForm, UUID userId);
 
     Optional<User> getUserByEmail(String email);

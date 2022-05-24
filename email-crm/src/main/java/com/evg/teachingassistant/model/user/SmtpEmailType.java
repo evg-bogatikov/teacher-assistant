@@ -7,11 +7,11 @@ public enum SmtpEmailType {
 
     private final String host;
 
-    SmtpEmailType(String host){
+    SmtpEmailType(String host) {
         this.host = host;
     }
 
-    public String getHost(){
+    public String getHost() {
         return host;
     }
 }

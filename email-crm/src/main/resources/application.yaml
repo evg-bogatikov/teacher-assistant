@@ -16,3 +16,8 @@ jwt:
   accessTokenExpirationMs: 600000
   refreshTokenExpirationMs: 1200000
   secret: very_very_secret_key@@very_very_secret_key+very_very_secret_key@@very_very_secret_key+very_very_secret_key@@very_very_secret_keyvery_very_secret_key@@very_very_secret_key+very_very_secret_key@@very_very_secret_key+very_very_secret_key@@very_very_secret_key
+
+telegram:
+  bot:
+    token: 5358052286:AAGharGgUDKFexjiUAPFKl4n-2Z0HwWkKc0
+    name: Teacher-assistant-bot

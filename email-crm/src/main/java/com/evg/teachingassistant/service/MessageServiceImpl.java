@@ -107,7 +107,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Void sendEmail(SendMessageForm messageForm, UUID userId) {
+    public Void sendEmailMessage(SendMessageForm messageForm, UUID userId) {
         User user = userService.getUserById(userId)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -131,7 +131,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public Optional<List<Message>> getAllMessageByListId(List<UUID> messageId) {
-       return messageRepository.findAllByIdIn(messageId);
+        return messageRepository.findAllByIdIn(messageId);
     }
 
 

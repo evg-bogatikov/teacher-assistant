@@ -46,6 +46,6 @@ public class MessageController {
     @PostMapping("/send")
     public ResponseEntity<Void> sendMessage(@RequestBody SendMessageForm sendMessageForm){
         UUID userId = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId();
-        return ResponseEntity.ok(messageService.sendEmail(sendMessageForm, userId));
+        return ResponseEntity.ok(messageService.sendEmailMessage(sendMessageForm, userId));
     }
 }

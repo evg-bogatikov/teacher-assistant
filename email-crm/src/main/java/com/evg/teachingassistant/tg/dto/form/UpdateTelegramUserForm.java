@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateTelegramUserForm {
-   private String firstName;
-   private String lastName;
-   private String group;
+    private String firstName;
+    private String lastName;
+    private String group;
 }

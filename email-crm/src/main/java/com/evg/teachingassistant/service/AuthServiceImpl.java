@@ -21,9 +21,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-
     private final RefreshTokenService refreshTokenService;
-
     private final JwtUtil jwtUtil;
 
     public AuthServiceImpl(UserService userService, PasswordEncoder passwordEncoder, RefreshTokenService refreshTokenService, JwtUtil jwtUtil) {
@@ -35,8 +33,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtView auth(UserAuthForm userAuthForm) {
-        User user = userService.getUserByEmailAndPassword(userAuthForm.getUsername(), userAuthForm.getPassword())
-                .orElseThrow(EntityNotFoundException::new);
+        User user = userService.getUserByEmailAndPassword(userAuthForm.getUsername(), userAuthForm.getPassword()).orElseThrow(EntityNotFoundException::new);
         String accessToken = jwtUtil.generateToken(userAuthForm.getUsername());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
         return new JwtView(accessToken, refreshToken.getToken(), user.getId(), user.getEmail(), user.getRoles());
@@ -52,13 +49,9 @@ public class AuthServiceImpl implements AuthService {
     public RefreshTokenView refreshToken(RefreshTokenForm refreshTokenForm) {
         String requestRefreshToken = refreshTokenForm.getRefreshToken();
 
-        return refreshTokenService.getRefreshTokenByToken(requestRefreshToken)
-                .map(refreshTokenService::verifyExpiration)
-                .map(RefreshToken::getUsername)
-                .map(username -> {
-                    String token = jwtUtil.generateToken(username);
-                    return new RefreshTokenView(token, requestRefreshToken);
-                })
-                .orElseThrow(EntityNotFoundException::new);
+        return refreshTokenService.getRefreshTokenByToken(requestRefreshToken).map(refreshTokenService::verifyExpiration).map(RefreshToken::getUsername).map(username -> {
+            String token = jwtUtil.generateToken(username);
+            return new RefreshTokenView(token, requestRefreshToken);
+        }).orElseThrow(EntityNotFoundException::new);
     }
 }

@@ -2,9 +2,9 @@ package com.evg.teachingassistant.tg.service;
 
 import com.evg.teachingassistant.exception.EntityNotFoundException;
 import com.evg.teachingassistant.repository.TelegramUserRepository;
-import com.evg.teachingassistant.tg.dto.view.TelegramProfile;
 import com.evg.teachingassistant.tg.dto.form.SaveTelegramUserForm;
 import com.evg.teachingassistant.tg.dto.form.UpdateTelegramUserForm;
+import com.evg.teachingassistant.tg.dto.view.TelegramProfile;
 import com.evg.teachingassistant.tg.model.TelegramUser;
 import com.evg.teachingassistant.tg.service.api.TelegramUserService;
 import org.springframework.stereotype.Service;
